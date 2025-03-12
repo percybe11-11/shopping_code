@@ -23,7 +23,7 @@ productHTML+=`<div class="product-container">
           </div>
 
           <div class="product-quantity-container">
-            <select>
+            <select id="select">
               <option selected value="1">1</option>
               <option value="2">2</option>
               <option value="3">3</option>
@@ -53,6 +53,7 @@ productHTML+=`<div class="product-container">
 
 document.querySelector('.product-grid-JSgenerator').innerHTML=productHTML;
 
+
 document.querySelectorAll('.js-add-to-cart').forEach((button)=>{
     button.addEventListener('click',()=>{
       productId=button.dataset.productId;
@@ -61,14 +62,39 @@ document.querySelectorAll('.js-add-to-cart').forEach((button)=>{
 
        matchingItem=cart.find((item)=>item.productId===productId);  
 
+       let quantSelect=parseInt(button.parentElement.querySelector('select').value);
+
        if(matchingItem){
-        matchingItem.quantity+=1;
+        matchingItem.quantity+=quantSelect;
        }else{
-        cart.push({productName:productName,productPricing:productPricing,quantity:1,productId:productId});
+        cart.push({productName:productName,productPricing:productPricing,quantity:quantSelect,productId:productId});}
+
+        cartDisplay=document.querySelector('.cart-quantity');
+
+        function cartDisplayUpdate(){
+          cartDisplay.innerText=cartQuantity;
+          };
+
+        let cartQuantity=0;
+
+        cart.forEach((item)=>{
+        cartQuantity+=item.quantity;
+        cartDisplayUpdate();
+        })
+
+  
+        cartDisplayUpdate();
+        console.log('cart:'+cartQuantity);
         console.log(cart);
-       }
     })
-  })
+  });
+
+
+
+ 
+
+ 
+  
       
 
 
