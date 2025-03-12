@@ -44,10 +44,31 @@ productHTML+=`<div class="product-container">
             Added
           </div>
 
-          <button class="add-to-cart-button button-primary">
+          <button class="add-to-cart-button button-primary js-add-to-cart" data-product-name="${products.name}" 
+          data-product-id="${products.id}"
+          data-product-price="${(products.priceCents/100).toFixed(2)}">
             Add to Cart
           </button>
         </div>`})
 
 document.querySelector('.product-grid-JSgenerator').innerHTML=productHTML;
+
+document.querySelectorAll('.js-add-to-cart').forEach((button)=>{
+    button.addEventListener('click',()=>{
+      productId=button.dataset.productId;
+      productName=button.dataset.productName;
+      productPricing=parseFloat(button.dataset.productPrice);
+
+       matchingItem=cart.find((item)=>item.productId===productId);  
+
+       if(matchingItem){
+        matchingItem.quantity+=1;
+       }else{
+        cart.push({productName:productName,productPricing:productPricing,quantity:1,productId:productId});
+        console.log(cart);
+       }
+    })
+  })
+      
+
 
