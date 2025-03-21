@@ -1,6 +1,7 @@
-import {cart, addToCart} from '../data/add-to-cart.js';
+import {cart,addToCart,cartDisplayUpdate} from '../data/add-to-cart.js';
 import {products} from '../data/products.js';
 import {priceCount} from './utils/money.js';
+
 
 let productHTML='';
 products.forEach((products)=>{
@@ -66,9 +67,7 @@ function addedDisplay(message){
     },2000)
   };
 
-  function cartDisplayUpdate(cartDisplay,cartQuantity){
-    cartDisplay.innerText=cartQuantity;
-    };
+ 
 
 document.querySelectorAll('.js-add-to-cart').forEach((button)=>{
     button.addEventListener('click',()=>{
@@ -84,16 +83,26 @@ document.querySelectorAll('.js-add-to-cart').forEach((button)=>{
 
       let cartDisplay=document.querySelector('.cart-quantity');
 
+      let cartQuantity=0;
+
       addToCart(productId,matchingItem,quantSelect);
 
       addedDisplay(message);
 
-        let cartQuantity=0;
+
+      cartDisplayUpdate(cartQuantity,cartDisplay);
+    
+
+
+
+
+
+       /* let cartQuantity=0;
         cart.forEach((item)=>{
         cartQuantity+=item.quantity;
         cartDisplayUpdate(cartDisplay,cartQuantity);
         })
-        cartDisplayUpdate(cartDisplay,cartQuantity);
+        cartDisplayUpdate(cartDisplay,cartQuantity);*/
         
     })
   });
