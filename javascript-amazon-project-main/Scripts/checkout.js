@@ -1,9 +1,9 @@
 import {cart,deleteFromCart} from "../data/add-to-cart.js";
 import {products} from "../data/products.js";
 import {priceCount} from "./utils/money.js";
-import dayjs from "https://unpkg.com/dayjs@1.11.10/esm/index.js" 
+import dayjs from "https://unpkg.com/supersimpledev@8.5.0/dayjs/esm/index.js" 
 import {deliveryOptions} from "../data/deliveryOptions.js"
-import { orderSummaryTotal, summaryItemsDisplay } from "./orderSummary.js";
+import { orderSummaryTotal, summaryItemsDisplay, shippingHandling } from "./orderSummary.js";
 
 
 let cartSummaryHTML='';
@@ -81,6 +81,8 @@ function deliveryOptionsHTML(matchingItem){
                     class="delivery-option-input"
                     data-delivery-id="${matchingItem.id}"
                     data-datestring-id="${dateString}"
+                    data-priceString-id="${priceString}"
+                    data-price="${option.priceCents / 100}"
                     name="delivery-option-${matchingItem.id}">
                   <div>
                     <div class="delivery-option-date">
@@ -91,11 +93,26 @@ function deliveryOptionsHTML(matchingItem){
                     </div>
                   </div>
                 </div>`
+             
                
   
   });
   return html;
 }
+
+function shippingInputCheck(){
+  let total = 0;
+
+  const selectedOptions = document.querySelectorAll('.delivery-option-input:checked');
+  
+  selectedOptions.forEach(option => {
+    const price = parseFloat(option.dataset.price) || 0;
+    total += price;
+})
+
+  shippingHandling(total);
+};
+
 
 
 function deliveryOptionSelect(){
@@ -103,10 +120,12 @@ function deliveryOptionSelect(){
     input.addEventListener('click',()=>{
       let deliveryid=input.dataset.deliveryId;
       let datestringid=input.dataset.datestringId;
+     let priceString=input.closest('.delivery-option').querySelector('.delivery-option-price').innerText; 
      const cartSelector=document.querySelector(`.js-cart-${deliveryid}`);
      const cartDateUpdate=cartSelector.querySelector('.delivery-date'); 
 
      cartDateUpdate.innerHTML=`Delivery date: ${datestringid}`;
+      shippingInputCheck();
     })
   })
   
@@ -115,6 +134,7 @@ function deliveryOptionSelect(){
 document.querySelector('.js-cart-summary-generator').innerHTML=cartSummaryHTML;
 checkoutDisplayHead();
 deliveryOptionSelect();
+
 
 document.querySelectorAll('.js-delete-link').forEach((link)=>{
 link.addEventListener('click',()=>{
