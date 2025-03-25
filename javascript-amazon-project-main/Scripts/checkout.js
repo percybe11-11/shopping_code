@@ -3,6 +3,7 @@ import {products} from "../data/products.js";
 import {priceCount} from "./utils/money.js";
 import dayjs from "https://unpkg.com/dayjs@1.11.10/esm/index.js" 
 import {deliveryOptions} from "../data/deliveryOptions.js"
+import { orderSummaryTotal, summaryItemsDisplay } from "./orderSummary.js";
 
 
 let cartSummaryHTML='';
@@ -58,6 +59,8 @@ cartSummaryHTML+=`<div class="cart-item-container js-cart-${matchingItem.id}">
               </div>
             </div>
           </div>`;   
+          summaryItemsDisplay();
+          orderSummaryTotal();
       
 });
 
@@ -123,6 +126,7 @@ link.addEventListener('click',()=>{
 
   cartContainer.remove();
   checkoutDisplayHead();
+  orderSummaryTotal();
 });
 });
 
@@ -153,6 +157,7 @@ document.querySelectorAll('.js-save-link').forEach((link) => {
 
     cartItemContainer.classList.remove('is-editing-quantity');
     checkoutDisplayHead();
+    orderSummaryTotal();
   });
 });
 
@@ -162,6 +167,7 @@ cart.forEach((cartItem)=>{
   totalQuantity+=cartItem.quantity;
 });
   document.querySelector('.js-checkout-generate').innerText = `${totalQuantity} items`;
+  summaryItemsDisplay();
 }
 
 

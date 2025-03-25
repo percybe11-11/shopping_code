@@ -51,7 +51,7 @@ productHTML+=`<div class="product-container">
 
           <button class="add-to-cart-button button-primary js-add-to-cart" data-product-name="${products.name}" 
           data-product-id="${products.id}"
-          data-product-price="${(products.priceCents/100).toFixed(2)}">
+          data-product-price="${products.priceCents}">
             Add to Cart
           </button>
         </div>`})
@@ -73,7 +73,7 @@ document.querySelectorAll('.js-add-to-cart').forEach((button)=>{
     button.addEventListener('click',()=>{
      let productId=button.dataset.productId;
      let productName=button.dataset.productName;
-      let productPricing=parseFloat(button.dataset.productPrice);
+      let productPricing=parseInt(button.dataset.productPrice);
 
       let matchingItem=cart.find((item)=>item.productId===productId); 
 
@@ -85,7 +85,7 @@ document.querySelectorAll('.js-add-to-cart').forEach((button)=>{
 
       let cartQuantity=0;
 
-      addToCart(productId,matchingItem,quantSelect);
+      addToCart(productId,matchingItem,quantSelect,productPricing);
 
       addedDisplay(message);
 
