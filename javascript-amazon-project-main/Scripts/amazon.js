@@ -17,14 +17,14 @@ productHTML+=`<div class="product-container">
 
           <div class="product-rating-container">
             <img class="product-rating-stars"
-              src="images/ratings/rating-${products.rating.stars*10}.png">
+              src="${products.getStars()}">
             <div class="product-rating-count link-primary">
               ${products.rating.count}
             </div>
           </div>
 
           <div class="product-price">
-            $${priceCount(products.priceCents)}
+            ${products.getPricing()}
           </div>
 
           <div class="product-quantity-container">
@@ -41,6 +41,8 @@ productHTML+=`<div class="product-container">
               <option value="10">10</option>
             </select>
           </div>
+
+          ${products.extraInfoHTML()}
 
           <div class="product-spacer"></div>
 
