@@ -1,7 +1,10 @@
 import {cart,addToCart,cartDisplayUpdate} from '../data/add-to-cart.js';
-import {products} from '../data/products.js';
+import {products, loadProducts} from '../data/products.js';
 import {priceCount} from './utils/money.js';
 
+loadProducts(productRender);
+
+function productRender(){
 
 let productHTML='';
 products.forEach((products)=>{
@@ -108,7 +111,7 @@ document.querySelectorAll('.js-add-to-cart').forEach((button)=>{
         cartDisplayUpdate(cartDisplay,cartQuantity);*/
         
     })
-  });
+  });}
 
 
   

@@ -92,9 +92,36 @@ console.log(this);
   -> functionName.call('value') can assign a value to this when calling it 
 }*/ 
 
+export let products=[];
+
+export function loadProducts(...callbacks){
+const xhr = new XMLHttpRequest();
+xhr.addEventListener('load',()=>{
+  products=JSON.parse(xhr.response).map((productDetails)=>{
+    if(productDetails.type==='clothing'){
+      return new Clothing(productDetails);
+    } else if(productDetails.type==='appliance'){
+      return new Appliance(productDetails);
+    } else {return new Product(productDetails);
+    }});
+    console.log(xhr.response);
+
+    callbacks.forEach((callback) => {
+      if (typeof callback === "function") {
+        callback();
+      }
+    });
+})
+
+xhr.open('GET', 'https://supersimplebackend.dev/products');
+xhr.send();
+};
 
 
-export const products = [
+loadProducts();
+
+
+/*export const products = [
   {
     id: "e43638ce-6aa0-4b85-b27f-e1d07eb678c6",
     image: "images/products/athletic-cotton-socks-6-pairs.jpg",
@@ -772,4 +799,4 @@ export const products = [
   } else if(productDetails.type==='appliance'){
     return new Appliance(productDetails);
   } else {return new Product(productDetails);
-  }});
+  }});*/

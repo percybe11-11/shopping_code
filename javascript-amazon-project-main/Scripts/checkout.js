@@ -1,12 +1,21 @@
 import {cart,deleteFromCart} from "../data/add-to-cart.js";
-import {products} from "../data/products.js";
+import {loadProducts, products} from "../data/products.js";
 import {priceCount} from "./utils/money.js";
 import dayjs from "https://unpkg.com/supersimpledev@8.5.0/dayjs/esm/index.js" 
 import {deliveryOptions} from "../data/deliveryOptions.js"
 import { orderSummaryTotal, summaryItemsDisplay, shippingHandling } from "./orderSummary.js";
-import '../data/backend-practice.js';
+
+/*import '../data/backend-practice.js';*/
 
 
+loadProducts(renderCheckout);
+
+function renderCheckout(){
+
+  if (products.length === 0) {
+    console.error("renderCheckout: Products not loaded yet!");
+    return;
+  }
 
 
 let cartSummaryHTML='';
@@ -192,7 +201,7 @@ cart.forEach((cartItem)=>{
   document.querySelector('.js-checkout-generate').innerText = `${totalQuantity} items`;
   summaryItemsDisplay();
 }
-
+};
 
 
 
