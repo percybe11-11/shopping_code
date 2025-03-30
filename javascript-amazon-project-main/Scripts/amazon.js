@@ -43,6 +43,7 @@ productHTML+=`<div class="product-container">
           </div>
 
           ${products.extraInfoHTML()}
+          ${products.applianceHTML()}
 
           <div class="product-spacer"></div>
 
