@@ -1,14 +1,39 @@
-import {cart,deleteFromCart} from "../data/add-to-cart.js";
+import {cart,deleteFromCart,saveCartState} from "../data/add-to-cart.js";
 import {loadProducts, products} from "../data/products.js";
 import {priceCount} from "./utils/money.js";
 import dayjs from "https://unpkg.com/supersimpledev@8.5.0/dayjs/esm/index.js" 
 import {deliveryOptions} from "../data/deliveryOptions.js"
 import { orderSummaryTotal, summaryItemsDisplay, shippingHandling } from "./orderSummary.js";
 
-/*import '../data/backend-practice.js';*/
 
 
 loadProducts(renderCheckout);
+
+/*
+Promise.all([
+new Promise((resolve)=>{
+  loadProducts(()=>{
+    resolve();})}),
+new Promise((resolve)=>{
+  loadCart(()=>{
+    reolve();
+    })})
+]).then (()=>{
+  renderCheckout();
+  })
+
+new Promise((resolve)=>{                 first we create a new promise function
+  loadProducts(()=>{                       we then call our async function loadProducts
+    resolve();
+  })
+}).then(()=>{                              we put a .then method to run the next step only 
+   return new Promise((resolve)=>{
+    loadCart(()=>{
+      resolve();
+      })}).then (()=>{
+      renderCheckout();
+      });                                       once the previous step is over
+})*/
 
 function renderCheckout(){
 
@@ -92,6 +117,7 @@ function deliveryOptionsHTML(matchingItem){
                   <input type="radio"
                     class="delivery-option-input"
                     data-delivery-id="${matchingItem.id}"
+                    data-delivery-option="${option.id}"
                     data-datestring-id="${dateString}"
                     data-priceString-id="${priceString}"
                     data-price="${option.priceCents / 100}"
@@ -132,7 +158,18 @@ function deliveryOptionSelect(){
     input.addEventListener('click',()=>{
       let deliveryid=input.dataset.deliveryId;
       let datestringid=input.dataset.datestringId;
+      let deliveryOption=input.dataset.deliveryOption;
      let priceString=input.closest('.delivery-option').querySelector('.delivery-option-price').innerText; 
+
+      const cartItem = cart.find((item)=>
+        deliveryid===item.productId); 
+        if (cartItem){
+          cartItem.deliveryDate=datestringid;
+          cartItem.deliveryPrice=priceString;
+          cartItem.deliveryOptionId=deliveryOption;
+          saveCartState(cart);
+    }
+
      const cartSelector=document.querySelector(`.js-cart-${deliveryid}`);
      const cartDateUpdate=cartSelector.querySelector('.delivery-date'); 
 

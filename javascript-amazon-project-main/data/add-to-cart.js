@@ -25,7 +25,7 @@ if(!cart){
   quantity:1,
 }];*/
 
-function saveCartState(cart){
+export function saveCartState(cart){
 localStorage.setItem('cartState1',JSON.stringify(cart));}
 
 export function addToCart(productId,matchingItem,quantSelect,productPricing){

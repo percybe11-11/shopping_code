@@ -1,4 +1,5 @@
 import {cart} from "../data/add-to-cart.js";
+import { loadOrder } from "../data/orders.js";
 import { deliveryOptions } from "../data/deliveryOptions.js";
 
 
@@ -51,6 +52,32 @@ function osTotal(){
   document.querySelector('.js-tax').innerText = `$${totalT.toFixed(2)}`;
   document.querySelector('.js-f-t').innerText=`$${(finalT).toFixed(2)}`;
 }
+
+
+document.querySelector('.js-place-order').addEventListener('click',async ()=>{
+  try{
+  const response = await fetch ('https://supersimplebackend.dev/orders',{
+    method: 'POST',
+    headers: {
+      'Content-type': 'application/json'
+    }, 
+    body: JSON.stringify({
+      cart: cart
+    }) 
+  });
+  if (!response.ok){
+    throw new Error(`error ${response.status}`);
+  }
+
+  const order=await response.json();
+  console.log(order);
+  loadOrder(order);
+  window.location.href='orders.html';
+
+} catch (error){
+  console.error("Error loading products:", error);
+}
+});
 
 
 
